@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+#
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion =
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ru.AenSidhe.RuCenterApi", "Ru.AenSidhe.RuCenterApi\Ru.AenSidhe.RuCenterApi.csproj", "{31D129D0-64CD-4BA8-9084-26DEC5AE0F80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{30A6E73D-B39C-4E2D-B100-73C00D6F85B3}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ru.AenSidhe.RuCenterApi.Tests", "Ru.AenSidhe.RuCenterApi.Tests\Ru.AenSidhe.RuCenterApi.Tests.csproj", "{74E5539E-F554-4297-A71F-D7EF0EE233D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,5 +23,12 @@ Global
 		{31D129D0-64CD-4BA8-9084-26DEC5AE0F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D129D0-64CD-4BA8-9084-26DEC5AE0F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D129D0-64CD-4BA8-9084-26DEC5AE0F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E5539E-F554-4297-A71F-D7EF0EE233D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E5539E-F554-4297-A71F-D7EF0EE233D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E5539E-F554-4297-A71F-D7EF0EE233D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E5539E-F554-4297-A71F-D7EF0EE233D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
