@@ -7,6 +7,10 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageVersion Include="IDisposableAnalyzers" Version="4.0.0" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.5.0" />
+    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.5.0" />
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.5.0" />
+    <PackageVersion Include="YAXLib" Version="4.2.0" />
 
     <!-- tests -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />

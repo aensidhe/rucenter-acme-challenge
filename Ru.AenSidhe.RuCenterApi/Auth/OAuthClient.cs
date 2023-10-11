@@ -25,10 +25,7 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
         return await MakeTokenRequest(Map(refreshToken), ct);
     }
 
-    public void Dispose()
-    {
-        _httpClient.Dispose();
-    }
+    public void Dispose() => _httpClient.Dispose();
 
     private async Task<TokenResult> MakeTokenRequest(IEnumerable<KeyValuePair<string, string>> formMap, CancellationToken ct)
     {
