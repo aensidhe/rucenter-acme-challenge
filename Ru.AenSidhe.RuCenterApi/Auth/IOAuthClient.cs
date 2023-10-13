@@ -4,7 +4,7 @@ namespace Ru.AenSidhe.RuCenterApi.Auth;
 
 public interface IOAuthClient
 {
-    Task<TokenResult> GetFirstToken(TokenRequest request, CancellationToken ct);
+    Task<TokenResult> GetToken(TokenRequest request, CancellationToken ct);
 
     Task<TokenResult> RefreshToken(RefreshToken refreshToken, CancellationToken token);
 }

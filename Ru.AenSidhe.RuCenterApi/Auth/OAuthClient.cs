@@ -15,7 +15,7 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
         _httpClient.BaseAddress = new Uri("https://api.nic.ru/oauth");
     }
 
-    public async Task<TokenResult> GetFirstToken(TokenRequest request, CancellationToken ct)
+    public async Task<TokenResult> GetToken(TokenRequest request, CancellationToken ct)
     {
         return await MakeTokenRequest(Map(request), ct);
     }

@@ -22,11 +22,16 @@ public abstract record DnsResult<T>
 {
     public sealed record Ok(T Value) : DnsResult<T>;
 
-    public sealed record ServerError(int Code, string? Message) : DnsResult<T>;
+    public sealed record Error(DnsError Value) : DnsResult<T>;
+}
 
-    public sealed record Unauthorized() : DnsResult<T>;
+public abstract record DnsError
+{
+    public sealed record ServerError(int Code, string? Message) : DnsError;
 
-    public sealed record Fail(Exception Exception) : DnsResult<T>;
+    public sealed record Unauthorized() : DnsError;
+
+    public sealed record Fail(Exception Exception) : DnsError;
 }
 
 public sealed record DnsRecordDeletionRequest(DnsZone Zone, DnsRecordId RecordId);

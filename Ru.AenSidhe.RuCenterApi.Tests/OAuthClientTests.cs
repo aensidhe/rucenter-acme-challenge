@@ -19,7 +19,7 @@ public class OAuthClientTests
         var oauthClient = new OAuthClient(new HttpClientFactory(response));
 
         var request = new TokenRequest("a", "b");
-        var tokenResult = await oauthClient.GetFirstToken(request, CancellationToken.None);
+        var tokenResult = await oauthClient.GetToken(request, CancellationToken.None);
 
         var token = tokenResult.Should().BeOfType<TokenResult.Ok>().Which.Token;
         token.AccessToken.Should().Be(returnedToken.access_token);
@@ -34,7 +34,7 @@ public class OAuthClientTests
         var oauthClient = new OAuthClient(new HttpClientFactory(new HttpResponseMessage(code)));
 
         var request = new TokenRequest("a", "b");
-        var tokenResult = await oauthClient.GetFirstToken(request, CancellationToken.None);
+        var tokenResult = await oauthClient.GetToken(request, CancellationToken.None);
 
         tokenResult.Should().BeOfType<TokenResult.Error>().Which.Message.Should().Contain(code.ToString());
     }
@@ -45,7 +45,7 @@ public class OAuthClientTests
         var oauthClient = new OAuthClient(HttpClientFactory.BOOMFactory);
 
         var request = new TokenRequest("a", "b");
-        var tokenResult = await oauthClient.GetFirstToken(request, CancellationToken.None);
+        var tokenResult = await oauthClient.GetToken(request, CancellationToken.None);
 
         tokenResult.Should().BeOfType<TokenResult.Error>().Which.Message.Should().Be("BOOM");
     }

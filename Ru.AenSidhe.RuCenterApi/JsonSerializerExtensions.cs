@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Ru.AenSidhe.RuCenterApi;
 
-public static class JsonSerializerExtensions
+internal static class JsonSerializerExtensions
 {
     public static T? DeserializeAnonymousType<T>(this string json, T _, JsonSerializerOptions? options = default)
         => JsonSerializer.Deserialize<T>(json, options);

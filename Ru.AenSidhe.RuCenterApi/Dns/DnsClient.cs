@@ -103,7 +103,7 @@ public sealed class DnsClient : IDnsClient, IDisposable
 
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
             {
-                return new DnsResult<XmlResponse>.Unauthorized();
+                return new DnsResult<XmlResponse>.Error(new DnsError.Unauthorized());
             }
 
             var response = new YAXSerializer<XmlResponse>()
@@ -116,11 +116,11 @@ public sealed class DnsClient : IDnsClient, IDisposable
 
             var firstError = response.Errors![0];
 
-            return new DnsResult<XmlResponse>.ServerError(firstError.Code, firstError.Message);
+            return new DnsResult<XmlResponse>.Error(new DnsError.ServerError(firstError.Code, firstError.Message));
         }
         catch (Exception ex)
         {
-            return new DnsResult<XmlResponse>.Fail(ex);
+            return new DnsResult<XmlResponse>.Error(new DnsError.Fail(ex));
         }
     }
 
@@ -132,10 +132,8 @@ public sealed class DnsClient : IDnsClient, IDisposable
         return xmlResponse switch
         {
             DnsResult<XmlResponse>.Ok x => new DnsResult<T>.Ok(f(x.Value)),
-            DnsResult<XmlResponse>.Unauthorized => new DnsResult<T>.Unauthorized(),
-            DnsResult<XmlResponse>.ServerError x => new DnsResult<T>.ServerError(x.Code, x.Message),
-            DnsResult<XmlResponse>.Fail x => new DnsResult<T>.Fail(x.Exception),
-            _ => new DnsResult<T>.Fail(new ArgumentOutOfRangeException(nameof(xmlResponse)))
+            DnsResult<XmlResponse>.Error x => new DnsResult<T>.Error(x.Value),
+            _ => new DnsResult<T>.Error(new DnsError.Fail(new ArgumentOutOfRangeException(nameof(xmlResponse))))
         };
     }
 

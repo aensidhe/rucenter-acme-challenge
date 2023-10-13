@@ -15,7 +15,8 @@ public class DnsClientNegativeTests
 
         var response = await dns.GetAllDnsZones(new AccessToken(Guid.NewGuid().ToString()), CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsZone[]>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<DnsZone[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -28,7 +29,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord[]>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<DnsRecord[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -41,7 +43,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -54,7 +57,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -70,7 +74,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<DnsRecord>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -86,7 +91,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Unauthorized>();
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Unauthorized>();
     }
 
     [Fact]
@@ -96,7 +102,8 @@ public class DnsClientNegativeTests
 
         var response = await dns.GetAllDnsZones(new AccessToken(Guid.NewGuid().ToString()), CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsZone[]>.Fail>()
+        response.Should().BeOfType<DnsResult<DnsZone[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -110,7 +117,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord[]>.Fail>()
+        response.Should().BeOfType<DnsResult<DnsRecord[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -124,7 +132,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Fail>()
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -138,7 +147,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Fail>()
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -155,7 +165,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord>.Fail>()
+        response.Should().BeOfType<DnsResult<DnsRecord>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -172,7 +183,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.Fail>()
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.Fail>()
             .Which.Exception.Message.Should().Be("BOOM");
     }
 
@@ -194,8 +206,8 @@ public class DnsClientNegativeTests
 
         var response = await dns.GetAllDnsZones(new AccessToken(Guid.NewGuid().ToString()), CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsZone[]>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<DnsZone[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 
     [Fact]
@@ -211,8 +223,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord[]>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<DnsRecord[]>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 
     [Fact]
@@ -228,8 +240,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 
     [Fact]
@@ -245,8 +257,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 
     [Fact]
@@ -265,8 +277,8 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<DnsRecord>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<DnsRecord>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 
     [Fact]
@@ -285,7 +297,7 @@ public class DnsClientNegativeTests
             new AccessToken(Guid.NewGuid().ToString()),
             CancellationToken.None);
 
-        response.Should().BeOfType<DnsResult<Unit>.ServerError>();
-        response.Should().BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
+        response.Should().BeOfType<DnsResult<Unit>.Error>()
+            .Which.Value.Should().BeOfType<DnsError.ServerError>().And.BeEquivalentTo(new { Code = 4097, Message = "Some server error" });
     }
 }
