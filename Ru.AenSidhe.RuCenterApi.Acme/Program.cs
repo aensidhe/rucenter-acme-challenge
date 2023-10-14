@@ -1,9 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Ru.AenSidhe.RuCenterApi;
 using Ru.AenSidhe.RuCenterApi.Acme;
+using Serilog;
 
 using var serviceProvider = new ServiceCollection()
-    .AddLogging()
+    .AddLogging(loggingBuilder =>
+    {
+        var config = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Console();
+        loggingBuilder.AddSerilog(config.CreateLogger(), true);
+    })
     .AddHttpClient()
     .AddRuCenterApi()
     .AddSingleton<AcmeService>()
