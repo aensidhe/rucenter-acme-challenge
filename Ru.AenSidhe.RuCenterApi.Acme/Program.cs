@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Ru.AenSidhe.RuCenterApi;
 using Ru.AenSidhe.RuCenterApi.Acme;
 using Serilog;
@@ -13,6 +13,7 @@ using var serviceProvider = new ServiceCollection()
     })
     .AddHttpClient()
     .AddRuCenterApi()
+    .AddSingleton<ICredentials, EnvironmentCredentials>()
     .AddSingleton<AcmeService>()
     .BuildServiceProvider();
 

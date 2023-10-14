@@ -3,15 +3,13 @@ using Ru.AenSidhe.RuCenterApi.Dns;
 
 namespace Ru.AenSidhe.RuCenterApi.Acme;
 
-public sealed record AcmeService(IOAuthClient Auth, IDnsClient Dns) : IAcmeService
+public sealed record AcmeService(IOAuthClient Auth, IDnsClient Dns, ICredentials Credentials) : IAcmeService
 {
-    private readonly string _login = "";
-    private readonly string _password = "";
     private readonly Ttl _ttl = new(60);
 
     public async Task<AcmeResult> CreateRecord(string fqdn, string value, CancellationToken ct = default)
     {
-        return await Auth.GetToken(new TokenRequest(_login, _password), ct) switch
+        return await Auth.GetToken(new TokenRequest(Credentials.Username, Credentials.Password), ct) switch
         {
             TokenResult.Ok ok => await CreateRecord(ok.Token.AccessToken, fqdn, value, ct),
             TokenResult.Error e => new(ExitCode.AuthError, e.Message),
@@ -57,7 +55,7 @@ public sealed record AcmeService(IOAuthClient Auth, IDnsClient Dns) : IAcmeServi
 
     public async Task<AcmeResult> DeleteRecord(string fqdn, string value, CancellationToken ct = default)
     {
-        return await Auth.GetToken(new TokenRequest(_login, _password), ct) switch
+        return await Auth.GetToken(new TokenRequest(Credentials.Username, Credentials.Password), ct) switch
         {
             TokenResult.Ok ok => await DeleteRecord(ok.Token.AccessToken, fqdn, ct),
             TokenResult.Error e => new(ExitCode.AuthError, e.Message),
