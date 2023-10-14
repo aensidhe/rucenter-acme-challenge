@@ -14,6 +14,15 @@ internal static class MoqExtensions
         return auth;
     }
 
+    public static Mock<IOAuthClient> AddFailedAuth(this Mock<IOAuthClient> auth)
+    {
+        auth
+            .Setup(x => x.GetToken(It.IsAny<TokenRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new TokenResult.Error("Mock error"))
+            .Verifiable(Times.Once);
+        return auth;
+    }
+
     public static Mock<IDnsClient> AddGetZonesOnce(this Mock<IDnsClient> dns, AccessToken token, DnsZone dnsZone)
     {
         dns
@@ -23,11 +32,47 @@ internal static class MoqExtensions
         return dns;
     }
 
+    public static Mock<IDnsClient> AddGetZonesServerError(this Mock<IDnsClient> dns, AccessToken token)
+    {
+        dns
+            .Setup(x => x.GetAllDnsZones(token, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DnsResult<DnsZone[]>.Error(new DnsError.ServerError(42, "Test error")))
+            .Verifiable(Times.Once);
+        return dns;
+    }
+
+    public static Mock<IDnsClient> AddGetZonesFail(this Mock<IDnsClient> dns, AccessToken token)
+    {
+        dns
+            .Setup(x => x.GetAllDnsZones(token, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DnsResult<DnsZone[]>.Error(new DnsError.Fail(new AbandonedMutexException())))
+            .Verifiable(Times.Once);
+        return dns;
+    }
+
+    public static Mock<IDnsClient> AddGetZonesUnauthorized(this Mock<IDnsClient> dns, AccessToken token)
+    {
+        dns
+            .Setup(x => x.GetAllDnsZones(token, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DnsResult<DnsZone[]>.Error(new DnsError.Unauthorized()))
+            .Verifiable(Times.Once);
+        return dns;
+    }
+
     public static Mock<IDnsClient> AddGetDnsRecordOnce(this Mock<IDnsClient> dns, AccessToken token, DnsZone dnsZone, DnsData data, DnsRecordId id)
     {
         dns
             .Setup(x => x.GetDnsRecords(dnsZone, token, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new DnsResult<DnsRecord[]>.Ok(new [] { new DnsRecord(id, data) }))
+            .Verifiable(Times.Once);
+        return dns;
+    }
+
+    public static Mock<IDnsClient> AddGetZeroDnsRecordOnce(this Mock<IDnsClient> dns, AccessToken token, DnsZone dnsZone)
+    {
+        dns
+            .Setup(x => x.GetDnsRecords(dnsZone, token, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DnsResult<DnsRecord[]>.Ok(Array.Empty<DnsRecord>()))
             .Verifiable(Times.Once);
         return dns;
     }

@@ -14,7 +14,7 @@ public sealed record AcmeResult(ExitCode ExitCode, string Message)
             error switch {
                 DnsError.Fail => ExitCode.UnknownError,
                 DnsError.ServerError => ExitCode.DnsError,
-                DnsError.Unauthorized => ExitCode.AccessTokenError,
+                DnsError.Unauthorized => ExitCode.Unauthorized,
                 _ => throw new ArgumentOutOfRangeException(nameof(error)),
             },
             error.ToString()
