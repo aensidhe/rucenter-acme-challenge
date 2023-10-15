@@ -10,7 +10,7 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
     public OAuthClient(IHttpClientFactory httpClientFactory)
     {
         _httpClient = httpClientFactory.CreateClient();
-        _httpClient.BaseAddress = new Uri("https://api.nic.ru/oauth");
+        _httpClient.BaseAddress = new Uri("https://api.nic.ru/oauth/");
     }
 
     public async Task<TokenResult> GetToken(TokenRequest request, CancellationToken ct)

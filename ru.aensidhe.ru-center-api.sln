@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{30A6E7
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
+		.vscode\launch.json = .vscode\launch.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ru.AenSidhe.RuCenterApi.Tests", "Ru.AenSidhe.RuCenterApi.Tests\Ru.AenSidhe.RuCenterApi.Tests.csproj", "{74E5539E-F554-4297-A71F-D7EF0EE233D6}"

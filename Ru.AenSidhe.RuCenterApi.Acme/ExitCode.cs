@@ -9,4 +9,5 @@ public enum ExitCode
     Unauthorized = 4,
     ZoneNotFound = 5,
     ZoneIsDirty = 6,
+    ArgParseError = 7,
 }

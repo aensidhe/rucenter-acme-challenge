@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "Cleanup",
+            "args": "cleanup a.b.aensidhe.ru qwer",
+            "program": "${workspaceFolder}/Ru.AenSidhe.RuCenterApi.Acme/bin/Debug/net7.0/Ru.AenSidhe.RuCenterApi.Acme.dll",
+            "envFile": "${workspaceFolder}/Ru.AenSidhe.RuCenterApi.Acme/.env"
+        },
+
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "Present",
+            "args": "present a.b.aensidhe.ru qwer",
+            "program": "${workspaceFolder}/Ru.AenSidhe.RuCenterApi.Acme/bin/Debug/net7.0/Ru.AenSidhe.RuCenterApi.Acme.dll",
+            "envFile": "${workspaceFolder}/Ru.AenSidhe.RuCenterApi.Acme/.env"
+        }
+    ]
+}
