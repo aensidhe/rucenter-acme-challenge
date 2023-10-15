@@ -5,8 +5,6 @@ namespace Ru.AenSidhe.RuCenterApi.Auth;
 
 public sealed class OAuthClient : IOAuthClient, IDisposable
 {
-    private readonly string _clientId = "eadc0acc4244694857d95e18ba1841a5";
-    private readonly string _clientSecret = "yA-pcYObuPWbusb477o-oHQUvLVHwlPg7dECrdFfnSE";
     private readonly HttpClient _httpClient;
 
     public OAuthClient(IHttpClientFactory httpClientFactory)
@@ -17,22 +15,22 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
 
     public async Task<TokenResult> GetToken(TokenRequest request, CancellationToken ct)
     {
-        return await MakeTokenRequest(Map(request), ct);
+        return await MakeTokenRequest(Map(request), request.ApplicationCredentials, ct);
     }
 
-    public async Task<TokenResult> RefreshToken(RefreshToken refreshToken, CancellationToken ct)
+    public async Task<TokenResult> RefreshToken(RefreshTokenRequest request, CancellationToken ct)
     {
-        return await MakeTokenRequest(Map(refreshToken), ct);
+        return await MakeTokenRequest(Map(request), request.ApplicationCredentials, ct);
     }
 
     public void Dispose() => _httpClient.Dispose();
 
-    private async Task<TokenResult> MakeTokenRequest(IEnumerable<KeyValuePair<string, string>> formMap, CancellationToken ct)
+    private async Task<TokenResult> MakeTokenRequest(IEnumerable<KeyValuePair<string, string>> formMap, IApplicationCredentials applicationCredentials, CancellationToken ct)
     {
         // ReSharper disable once UsingStatementResourceInitialization
         using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "token")
         {
-            Headers = { Authorization = GetAuthorizationHeader() },
+            Headers = { Authorization = GetAuthorizationHeader(applicationCredentials) },
             Content = new FormUrlEncodedContent(formMap)
         };
 
@@ -65,9 +63,9 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
             DateTimeOffset.UtcNow.AddSeconds(token.expires_in));
     }
 
-    private AuthenticationHeaderValue GetAuthorizationHeader()
+    private static AuthenticationHeaderValue GetAuthorizationHeader(IApplicationCredentials credentials)
     {
-        var value = $"{_clientId}:{_clientSecret}";
+        var value = $"{credentials.ClientId}:{credentials.ClientSecret}";
         return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(value)));
     }
 
@@ -76,18 +74,22 @@ public sealed class OAuthClient : IOAuthClient, IDisposable
         return new Dictionary<string, string>
         {
             { "grant_type", "password" },
-            { "username", request.Login },
-            { "password", request.Password },
-            { "scope", request.Scope }
+            { "username", request.UserCredentials.Username },
+            { "password", request.UserCredentials.Password },
+            { "scope", request.Scope },
+            { "client_id", request.ApplicationCredentials.ClientId },
+            { "client_secret", request.ApplicationCredentials.ClientSecret },
         };
     }
 
-    private IEnumerable<KeyValuePair<string,string>> Map(RefreshToken refreshToken)
+    private static IEnumerable<KeyValuePair<string,string>> Map(RefreshTokenRequest request)
     {
         return new Dictionary<string, string>
         {
             { "grant_type", "refresh_token" },
-            { "refresh_token", refreshToken.AsPrimitive() }
+            { "refresh_token", request.RefreshToken.AsPrimitive() },
+            { "client_id", request.ApplicationCredentials.ClientId },
+            { "client_secret", request.ApplicationCredentials.ClientSecret },
         };
     }
 }

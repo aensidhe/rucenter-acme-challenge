@@ -11,7 +11,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task GetAllZones_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.GetAllDnsZones(new AccessToken(Guid.NewGuid().ToString()), CancellationToken.None);
 
@@ -22,7 +22,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task GetDnsRecords_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.GetDnsRecords(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -36,7 +36,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task Commit_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.Commit(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -50,7 +50,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task Rollback_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.Rollback(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -64,7 +64,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task CreateDnsRecord_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.CreateDnsRecord(
             new DnsRecordCreationRequest(
@@ -81,7 +81,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task DeleteDnsRecord_Unauthorized()
     {
-        var dns = new DnsClient(HttpClientFactory.Unauthorized);
+        var dns = new DnsClient(new HttpClientFactory(new UnauthorizedHandler()));
 
         var response = await dns.DeleteDnsRecord(
             new DnsRecordDeletionRequest(
@@ -98,7 +98,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task GetAllZones_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.GetAllDnsZones(new AccessToken(Guid.NewGuid().ToString()), CancellationToken.None);
 
@@ -110,7 +110,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task GetDnsRecords_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.GetDnsRecords(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -125,7 +125,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task Commit_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.Commit(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -140,7 +140,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task Rollback_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.Rollback(
             new DnsZone(new DnsZoneId(1), "asd", new DnsServiceName("asd"), false),
@@ -155,7 +155,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task CreateDnsRecord_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.CreateDnsRecord(
             new DnsRecordCreationRequest(
@@ -173,7 +173,7 @@ public class DnsClientNegativeTests
     [Fact]
     public async Task DeleteDnsRecord_Exception()
     {
-        var dns = new DnsClient(HttpClientFactory.BOOMFactory);
+        var dns = new DnsClient(new HttpClientFactory(new ExceptionHandler()));
 
         var response = await dns.DeleteDnsRecord(
             new DnsRecordDeletionRequest(

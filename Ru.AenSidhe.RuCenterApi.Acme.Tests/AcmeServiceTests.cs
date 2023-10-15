@@ -19,7 +19,7 @@ public class AcmeServiceTests
             .AddGetZonesOnce(token, zone)
             .AddCreateDnsRecordOnce(token, zone, data, id)
             .AddCommitOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -46,7 +46,7 @@ public class AcmeServiceTests
             .AddGetDnsRecordOnce(token, zone, data, id)
             .AddDeleteDnsRecordOnce(token, zone, id)
             .AddCommitOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.DeleteRecord("abc.acme.com", "test record");
 
@@ -63,7 +63,7 @@ public class AcmeServiceTests
     {
         var auth = new Mock<IOAuthClient>().AddFailedAuth();
         var dns = new Mock<IDnsClient>();
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -80,7 +80,7 @@ public class AcmeServiceTests
     {
         var auth = new Mock<IOAuthClient>().AddFailedAuth();
         var dns = new Mock<IDnsClient>();
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.DeleteRecord("abc.acme.com", "test record");
 
@@ -98,7 +98,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesServerError(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -116,7 +116,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesServerError(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -134,7 +134,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesFail(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -152,7 +152,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesFail(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -170,7 +170,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesUnauthorized(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -188,7 +188,7 @@ public class AcmeServiceTests
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>().AddGetTokenOnce(token);
         var dns = new Mock<IDnsClient>().AddGetZonesUnauthorized(token);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -211,7 +211,7 @@ public class AcmeServiceTests
         var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), false);
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme2.com", "test record");
 
@@ -232,7 +232,7 @@ public class AcmeServiceTests
 
         var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), true);
         var dns = new Mock<IDnsClient>().AddGetZonesOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
 
@@ -254,7 +254,7 @@ public class AcmeServiceTests
         var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), false);
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.DeleteRecord("abc.acme2.com", "test record");
 
@@ -276,7 +276,7 @@ public class AcmeServiceTests
         var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), true);
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.DeleteRecord("abc.acme.com", "test record");
 
@@ -300,7 +300,7 @@ public class AcmeServiceTests
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone)
             .AddGetZeroDnsRecordOnce(token, zone);
-        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance);
+        var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
         var (exitCode, message) = await acme.DeleteRecord("abc.acme.com", "test record");
 
@@ -312,14 +312,17 @@ public class AcmeServiceTests
         dns.VerifyNoOtherCalls();
     }
 
-    private sealed class MockCreds : ICredentials
+    private sealed class MockCreds : IUserCredentials, IApplicationCredentials
     {
         private MockCreds() {}
 
-        public string Username => "throw new NotImplementedException();";
+        public string Username => "u";
 
-        public string Password => "throw new NotImplementedException();";
+        public string Password => "p";
 
+        public string ClientId => "i";
+
+        public string ClientSecret => "s";
         public static readonly MockCreds Instance = new();
     }
 }

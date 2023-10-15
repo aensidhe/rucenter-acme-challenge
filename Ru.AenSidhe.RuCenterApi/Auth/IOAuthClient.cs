@@ -6,7 +6,7 @@ public interface IOAuthClient
 {
     Task<TokenResult> GetToken(TokenRequest request, CancellationToken ct);
 
-    Task<TokenResult> RefreshToken(RefreshToken refreshToken, CancellationToken token);
+    Task<TokenResult> RefreshToken(RefreshTokenRequest request, CancellationToken token);
 }
 
 [UnitOf(typeof(string))]
@@ -24,4 +24,6 @@ public abstract record TokenResult
     public sealed record Error(string Message) : TokenResult;
 }
 
-public sealed record TokenRequest(string Login, string Password, string Scope = ".*");
+public sealed record TokenRequest(IUserCredentials UserCredentials, IApplicationCredentials ApplicationCredentials, string Scope = ".*");
+
+public sealed record RefreshTokenRequest(RefreshToken RefreshToken, IApplicationCredentials ApplicationCredentials);

@@ -1,7 +1,6 @@
 
 
 using System.Collections;
-using System.Net;
 
 namespace Ru.AenSidhe.RuCenterApi.Tests.Mocks;
 public sealed class HttpClientFactory : IHttpClientFactory, IEnumerable
@@ -36,29 +35,5 @@ public sealed class HttpClientFactory : IHttpClientFactory, IEnumerable
 
     public HttpClient CreateClient(string _) => new(_handler);
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static IHttpClientFactory BOOMFactory { get; } = new HttpClientFactory(new ExceptionHandler());
-
-    public static IHttpClientFactory Unauthorized { get; } = new HttpClientFactory(new UnauthorizedHandler());
-
-    private sealed class ExceptionHandler : DelegatingHandler
-    {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            await Task.Yield();
-            throw new Exception("BOOM");
-        }
-    }
-
-    private sealed class UnauthorizedHandler : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.Unauthorized));
-        }
-    }
+    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
 }
