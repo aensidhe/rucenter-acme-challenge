@@ -1,0 +1,1 @@
+[![.NET](https://github.com/aensidhe/rucenter-acme-challenge/actions/workflows/dotnet.yml/badge.svg)](https://github.com/aensidhe/rucenter-acme-challenge/actions/workflows/dotnet.yml)
