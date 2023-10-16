@@ -10,7 +10,7 @@ on:
   pull_request:
 
 env:
-  RELEASE_FILENAME: Ru.AenSidhe.RuCenterApi.${{ github.ref_name }}
+  RELEASE_FILENAME: Ru.AenSidhe.RuCenterApi.${{ github.ref_name }}.zip
   RELEASE_DIR: Ru.AenSidhe.RuCenterApi.Acme/bin/Release/net7.0/linux-musl-x64/publish
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
       if: ${{ success() && github.ref_type == 'tag' }}
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.RELEASE_FILENAME }}
+        name: ${{ env.RELEASE_FILENAME }}.zip
         path: ${{ env.RELEASE_DIR }}
 
     - name: Zip Release
@@ -49,6 +49,12 @@ jobs:
         filename: ${{ env.RELEASE_FILENAME }}
         directory: ${{ env.RELEASE_DIR }}
 
+    - name: Publish to artifacts
+      if: ${{ success() && github.ref_type == 'tag' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.RELEASE_FILENAME }}
+        path: ${{ env.RELEASE_DIR }}
 
     - name: Upload files to a GitHub release
       if: ${{ success() && github.ref_type == 'tag' }}
