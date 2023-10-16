@@ -32,7 +32,7 @@ jobs:
 
     - name: Publish
       if: ${{ success() && github.ref_type == 'tag' }}
-      run: dotnet publish --no-build --verbosity normal
+      run: dotnet publish -c Release --no-build --verbosity normal
 
     - name: Deploy
       if: ${{ success() && github.ref_type == 'tag' }}
