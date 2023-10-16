@@ -111,7 +111,7 @@ public sealed record AcmeService(IOAuthClient Auth, IDnsClient Dns, IUserCredent
         if (string.IsNullOrWhiteSpace(fqdn))
             throw new ArgumentNullException(nameof(fqdn));
 
-        var domains = fqdn.Split(".");
+        var domains = fqdn.Split(".", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         if (domains.Length < 3)
             throw new ArgumentOutOfRangeException(nameof(fqdn), $"{fqdn} is not even L3 domain, but L{domains.Length} domain. Can't work on it");
 

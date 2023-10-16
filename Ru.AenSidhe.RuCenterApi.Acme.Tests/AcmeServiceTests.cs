@@ -5,15 +5,17 @@ namespace Ru.AenSidhe.RuCenterApi.Acme.Tests;
 
 public class AcmeServiceTests
 {
-    [Fact]
-    public async Task CreateRecord_HappyPath()
+    [Theory]
+    [InlineData("abc.acme.com", "abc", "acme.com")]
+    [InlineData("abc.acme.com.", "abc", "acme.com")]
+    public async Task CreateRecord_HappyPath(string fqdn, string domain, string zoneName)
     {
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>()
             .AddGetTokenOnce(token);
 
-        var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), false);
-        var data = new DnsData.Txt("abc", "test record", new Ttl(60));
+        var zone = new DnsZone(new DnsZoneId(123), zoneName, new DnsServiceName(Guid.NewGuid().ToString()), false);
+        var data = new DnsData.Txt(domain, "test record", new Ttl(60));
         var id = new DnsRecordId(234);
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone)
@@ -21,7 +23,7 @@ public class AcmeServiceTests
             .AddCommitOnce(token, zone);
         var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
-        var (exitCode, message) = await acme.CreateRecord("abc.acme.com", "test record");
+        var (exitCode, message) = await acme.CreateRecord(fqdn, "test record");
 
         exitCode.Should().Be(ExitCode.Ok);
         message.Should().Be("Changes were committed");
@@ -31,15 +33,17 @@ public class AcmeServiceTests
         dns.VerifyNoOtherCalls();
     }
 
-    [Fact]
-    public async Task DeleteRecord_HappyPath()
+    [Theory]
+    [InlineData("abc.acme.com", "abc", "acme.com")]
+    [InlineData("abc.acme.com.", "abc", "acme.com")]
+    public async Task DeleteRecord_HappyPath(string fqdn, string domain, string zoneName)
     {
         var token = new AccessToken(Guid.NewGuid().ToString());
         var auth = new Mock<IOAuthClient>()
             .AddGetTokenOnce(token);
 
-        var zone = new DnsZone(new DnsZoneId(123), "acme.com", new DnsServiceName(Guid.NewGuid().ToString()), false);
-        var data = new DnsData.Txt("abc", "test record", new Ttl(60));
+        var zone = new DnsZone(new DnsZoneId(123), zoneName, new DnsServiceName(Guid.NewGuid().ToString()), false);
+        var data = new DnsData.Txt(domain, "test record", new Ttl(60));
         var id = new DnsRecordId(234);
         var dns = new Mock<IDnsClient>()
             .AddGetZonesOnce(token, zone)
@@ -48,7 +52,7 @@ public class AcmeServiceTests
             .AddCommitOnce(token, zone);
         var acme = new AcmeService(auth.Object, dns.Object, MockCreds.Instance, MockCreds.Instance);
 
-        var (exitCode, message) = await acme.DeleteRecord("abc.acme.com", "test record");
+        var (exitCode, message) = await acme.DeleteRecord(fqdn, "test record");
 
         exitCode.Should().Be(ExitCode.Ok);
         message.Should().Be("Changes were committed");
